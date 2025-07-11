@@ -1,15 +1,26 @@
--- Index for user_id in bookings (frequent joins)
+-- Measure performance BEFORE creating index
+EXPLAIN ANALYZE
+SELECT *
+FROM bookings
+WHERE user_id = 42;
+
+-- Create index to optimize query
 CREATE INDEX idx_bookings_user_id ON bookings(user_id);
 
--- Index for property_id in bookings (frequent joins and filtering)
+-- Measure performance AFTER creating index
+EXPLAIN ANALYZE
+SELECT *
+FROM bookings
+WHERE user_id = 42;
+
+-- Another index example
 CREATE INDEX idx_bookings_property_id ON bookings(property_id);
 
--- Index for start_date in bookings (used in partitioning and date queries)
+-- Additional performance check
+EXPLAIN ANALYZE
+SELECT *
+FROM bookings
+WHERE property_id = 101;
+
+-- Index for start_date (used in date filtering and partitioning)
 CREATE INDEX idx_bookings_start_date ON bookings(start_date);
-
--- Index for property_id in reviews (used in joins and aggregations)
-CREATE INDEX idx_reviews_property_id ON reviews(property_id);
-
--- Index for email in users (likely used in filtering or logins)
-CREATE INDEX idx_users_email ON users(email);
-
